@@ -16,6 +16,7 @@ position of tracked objects.
 | `label.py` | Minimal OpenCV labeler (drag a box, save in YOLO format). One class: `fixture`. |
 | `prepare_dataset.py` | Splits labeled images 80/20 into train/val and writes `dataset.yaml`. |
 | `train.py` | Fine-tunes YOLOv8n on the labeled dataset. |
+| `concentricity.py` | Verify a circular fixture is concentric with a circular hole; reports lateral offset in mm and emits PASS/FAIL with a stability filter. |
 
 ## Hardware
 
@@ -54,6 +55,21 @@ Click a detection to lock the filter to that class. `c` clears the filter.
 ```bash
 python yolo_track.py --model weights/best.pt --conf 0.3
 ```
+
+### Concentricity check (fixture vs. hole)
+Verify a circular fixture is centered on a circular hole below it before
+a rod presses it home. Workflow:
+```bash
+python concentricity.py --tolerance 1.0
+```
+1. Aim the camera at the empty hole. Press **h** to lock the hole position.
+2. Let the robotic arm hover the fixture above the hole.
+3. The HUD shows the offset in mm. After 5 consecutive frames within the
+   tolerance, status flips to **PASS**.
+
+Assumptions: camera roughly perpendicular to the surface; controlled lighting;
+fixture is closer to the camera than the hole (so the foreground depth band
+isolates it).
 
 ## Training a custom object detector
 
