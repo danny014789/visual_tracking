@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# Local training outputs (regenerated from train.py)
+runs/
+
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
